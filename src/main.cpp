@@ -72,16 +72,17 @@ pair <im_treap *, im_treap *> im_split(im_treap * t, int k) {
 im_treap * insert(int value, int pos, int y, im_treap * t) {
     pair <im_treap *, im_treap *> tmp_pair = im_split(t, pos);
     auto root = new(im_treap);
-    root->left = tmp_pair.first;
-    root->right = tmp_pair.second;
     root->value = value;
     root->y = y;
+    root = im_merge(root, tmp_pair.second);
+    root = update_weight(root);
+    root = im_merge(tmp_pair.first, root);
     root = update_weight(root);
     return root;
 }
 
 im_treap * im_remove(int pos, im_treap * t) {
-    if (look_count(t->left) == pos) { 
+    if (look_count(t->left) == pos) {
         t = im_merge(t->left, t->right);
         t = update_weight(t);
         return t;
